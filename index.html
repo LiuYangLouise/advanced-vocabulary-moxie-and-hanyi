@@ -354,7 +354,7 @@
 
         <!-- 开始按钮 -->
         <div class="start-section">
-            <button class="start-btn" id="startBtn" disabled>开始练习</button>
+            <button class="start-btn" id="startBtn" disabled>请至少选择一个单元</button>
             <div class="start-hint">每次随机抽取 25 个词 · 听写 15s · 含义 10s</div>
             <button class="logout-btn" id="logoutBtn">退出登录</button>
         </div>
@@ -362,12 +362,15 @@
         <div class="footer">Reborn · 新生留学</div>
     </div>
 
+    <!-- ========== 加载词汇数据 ========== -->
+    <script src="vocabulary.js"></script>
+
     <script>
         // ============================================================
         // 登录校验
         // ============================================================
         (function() {
-            const urlParams = new URLSearchParams(window.location.search);
+            var urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('login') === 'ok') {
                 sessionStorage.setItem('loginOk', 'yes');
             }
@@ -379,10 +382,10 @@
         // ============================================================
         // 主题切换
         // ============================================================
-        const themeSlider = document.getElementById('themeSlider');
-        const body = document.body;
+        var themeSlider = document.getElementById('themeSlider');
+        var body = document.body;
         if (localStorage.getItem('theme') === 'light') body.classList.add('light-mode');
-        themeSlider.addEventListener('click', () => {
+        themeSlider.addEventListener('click', function() {
             body.classList.toggle('light-mode');
             localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
         });
@@ -390,10 +393,10 @@
         // ============================================================
         // 模式切换
         // ============================================================
-        let selectedMode = 'dictation';
-        document.querySelectorAll('.mode-btn').forEach(btn => {
+        var selectedMode = 'dictation';
+        document.querySelectorAll('.mode-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.mode-btn').forEach(function(b) { b.classList.remove('active'); });
                 this.classList.add('active');
                 selectedMode = this.dataset.mode;
                 updateStartButton();
@@ -403,38 +406,18 @@
         // ============================================================
         // 单元列表（21天）
         // ============================================================
-        const DAY_NAMES = {
-            'Day 1': 'Day 1',
-            'Day 2': 'Day 2',
-            'Day 3': 'Day 3',
-            'Day 4': 'Day 4',
-            'Day 5': 'Day 5',
-            'Day 6': 'Day 6',
-            'Day 7': 'Day 7',
-            'Day 8': 'Day 8',
-            'Day 9': 'Day 9',
-            'Day 10': 'Day 10',
-            'Day 11': 'Day 11',
-            'Day 12': 'Day 12',
-            'Day 13': 'Day 13',
-            'Day 14': 'Day 14',
-            'Day 15': 'Day 15',
-            'Day 16': 'Day 16',
-            'Day 17': 'Day 17',
-            'Day 18': 'Day 18',
-            'Day 19': 'Day 19',
-            'Day 20': 'Day 20',
-            'Day 21': 'Day 21'
-        };
-        const DAY_IDS = Object.keys(DAY_NAMES);
+        var DAY_IDS = [];
+        for (var i = 1; i <= 21; i++) {
+            DAY_IDS.push('Day ' + i);
+        }
 
-        let selectedUnits = new Set();
+        var selectedUnits = new Set();
 
-        const unitGrid = document.getElementById('unitGrid');
-        DAY_IDS.forEach(id => {
-            const chip = document.createElement('div');
+        var unitGrid = document.getElementById('unitGrid');
+        DAY_IDS.forEach(function(id) {
+            var chip = document.createElement('div');
             chip.className = 'unit-chip';
-            const cb = document.createElement('input');
+            var cb = document.createElement('input');
             cb.type = 'checkbox';
             cb.value = id;
             cb.id = 'unit-' + id;
@@ -444,7 +427,7 @@
                 updateUnitCount();
                 updateStartButton();
             });
-            const label = document.createElement('label');
+            var label = document.createElement('label');
             label.htmlFor = 'unit-' + id;
             label.textContent = id;
             chip.appendChild(cb);
@@ -457,12 +440,12 @@
         }
 
         function updateStartButton() {
-            const btn = document.getElementById('startBtn');
+            var btn = document.getElementById('startBtn');
             btn.disabled = selectedUnits.size === 0;
             if (selectedUnits.size === 0) {
                 btn.textContent = '请至少选择一个单元';
             } else {
-                const modeText = selectedMode === 'dictation' ? '听写' : '含义';
+                var modeText = selectedMode === 'dictation' ? '听写' : '含义';
                 btn.textContent = '开始 ' + modeText + ' (' + selectedUnits.size + ' 个单元)';
             }
         }
@@ -472,8 +455,8 @@
         // ============================================================
         document.getElementById('startBtn').addEventListener('click', function() {
             if (selectedUnits.size === 0) return;
-            const voice = document.querySelector('input[name="voice"]:checked').value;
-            const unitsParam = Array.from(selectedUnits).join(',');
+            var voice = document.querySelector('input[name="voice"]:checked').value;
+            var unitsParam = Array.from(selectedUnits).join(',');
             window.location.href = 'quiz.html?mode=' + selectedMode + '&units=' + encodeURIComponent(unitsParam) + '&voice=' + voice + '&login=ok';
         });
 
