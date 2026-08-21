@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Reborn新生留学 · 高阶词汇听写</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background: #1A1A1A;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        body.light-mode {
+            background: #f0f7ea;
+            color: #1A1A1A;
+        }
+        .container {
+            max-width: 680px;
+            width: 100%;
+            background: #1A1A1A;
+            padding: 32px 24px 28px;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .container {
+            background: #FFFFFF;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d6b3e;
+            letter-spacing: 1px;
+        }
+        .header .sub {
+            font-size: 1rem;
+            color: #5a8a62;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-top: 2px;
+        }
+
+        .theme-slider-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .theme-slider {
+            width: 60px;
+            height: 30px;
+            background: #262626;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .theme-slider {
+            background: #dce8d0;
+        }
+        .slider-dot {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .slider-dot {
+            background: #1A1A1A;
+            left: 33px;
+        }
+
+        .mode-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .mode-btn {
+            flex: 1;
+            padding: 16px 12px;
+            border: 2px solid #2A2A2A;
+            border-radius: 16px;
+            background: transparent;
+            color: #888888;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+        body.light-mode .mode-btn {
+            border-color: #dce8d0;
+        }
+        .mode-btn .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .mode-btn .label {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .mode-btn.active {
+            border-color: #2d6b3e;
+            background: rgba(45, 107, 62, 0.10);
+            color: #FFFFFF;
+        }
+        body.light-mode .mode-btn.active {
+            background: rgba(45, 107, 62, 0.06);
+            color: #1A1A1A;
+        }
+        .mode-btn.active .label {
+            color: #2d6b3e;
+        }
+
+        .voice-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            justify-content: flex-end;
+        }
+        .voice-section span {
+            font-size: 0.9rem;
+            color: #888888;
+        }
+        .voice-section label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #888888;
+            font-size: 0.9rem;
+        }
+        .voice-section input[type="radio"] {
+            accent-color: #2d6b3e;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        body.light-mode .voice-section label {
+            color: #666666;
+        }
+
+        .unit-section {
+            margin-bottom: 24px;
+        }
+        .unit-section .title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .unit-section .title .count {
+            font-weight: 400;
+            color: #888888;
+            font-size: 0.9rem;
+        }
+        .unit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 8px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .unit-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+        .unit-grid::-webkit-scrollbar-track {
+            background: #2A2A2A;
+            border-radius: 4px;
+        }
+        body.light-mode .unit-grid::-webkit-scrollbar-track {
+            background: #e8f3e0;
+        }
+        .unit-grid::-webkit-scrollbar-thumb {
+            background: #2d6b3e;
+            border-radius: 4px;
+        }
+        .unit-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #262626;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+            font-size: 0.85rem;
+        }
+        body.light-mode .unit-chip {
+            background: #F5F9F2;
+        }
+        .unit-chip:hover {
+            border-color: #2d6b3e;
+        }
+        .unit-chip input[type="checkbox"] {
+            accent-color: #2d6b3e;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .unit-chip label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .start-section {
+            text-align: center;
+        }
+        .start-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: #2d6b3e;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 1px;
+        }
+        .start-btn:hover:not(:disabled) {
+            background: #3a7a4a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(45, 107, 62, 0.3);
+        }
+        .start-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .start-hint {
+            font-size: 0.85rem;
+            color: #888888;
+            margin-top: 10px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: #666;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.15s ease;
+        }
+        .logout-btn:hover {
+            border-color: #2d6b3e;
+            color: #2d6b3e;
+        }
+        body.light-mode .logout-btn {
+            border-color: #dce8d0;
+        }
+        body.light-mode .logout-btn:hover {
+            border-color: #2d6b3e;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 16px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .mode-btn {
+                padding: 12px 8px;
+            }
+            .unit-grid {
+                grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+            }
+            .unit-chip {
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
+            .voice-section {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="theme-slider-container">
+            <div class="theme-slider" id="themeSlider">
+                <div class="slider-dot"></div>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>Reborn新生留学</h1>
+            <div class="sub">高阶词汇听写</div>
+        </div>
+
+        <!-- 模式选择 -->
+        <div class="mode-section">
+            <button class="mode-btn active" data-mode="dictation">
+                <span class="icon">🔊</span>
+                <span class="label">听写检查</span>
+            </button>
+            <button class="mode-btn" data-mode="meaning">
+                <span class="icon">📝</span>
+                <span class="label">含义检查</span>
+            </button>
+        </div>
+
+        <!-- 发音选择 -->
+        <div class="voice-section">
+            <span>发音：</span>
+            <label><input type="radio" name="voice" value="en-GB" checked> 🇬🇧 英音</label>
+            <label><input type="radio" name="voice" value="en-US"> 🇺🇸 美音</label>
+        </div>
+
+        <!-- 单元选择 -->
+        <div class="unit-section">
+            <div class="title">
+                <span>选择单元</span>
+                <span class="count" id="unitCount">已选 0 个</span>
+            </div>
+            <div class="unit-grid" id="unitGrid"></div>
+        </div>
+
+        <!-- 开始按钮 -->
+        <div class="start-section">
+            <button class="start-btn" id="startBtn" disabled>开始练习</button>
+            <div class="start-hint">每次随机抽取 25 个词 · 听写 15s · 含义 10s</div>
+            <button class="logout-btn" id="logoutBtn">退出登录</button>
+        </div>
+
+        <div class="footer">Reborn · 新生留学</div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 登录校验
+        // ============================================================
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('login') === 'ok') {
+                sessionStorage.setItem('loginOk', 'yes');
+            }
+            if (!sessionStorage.getItem('loginOk')) {
+                window.location.replace('login.html');
+            }
+        })();
+
+        // ============================================================
+        // 主题切换
+        // ============================================================
+        const themeSlider = document.getElementById('themeSlider');
+        const body = document.body;
+        if (localStorage.getItem('theme') === 'light') body.classList.add('light-mode');
+        themeSlider.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+
+        // ============================================================
+        // 模式切换
+        // ============================================================
+        let selectedMode = 'dictation';
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedMode = this.dataset.mode;
+                updateStartButton();
+            });
+        });
+
+        // ============================================================
+        // 单元列表（21天）
+        // ============================================================
+        const DAY_NAMES = {
+            'Day 1': 'Day 1',
+            'Day 2': 'Day 2',
+            'Day 3': 'Day 3',
+            'Day 4': 'Day 4',
+            'Day 5': 'Day 5',
+            'Day 6': 'Day 6',
+            'Day 7': 'Day 7',
+            'Day 8': 'Day 8',
+            'Day 9': 'Day 9',
+            'Day 10': 'Day 10',
+            'Day 11': 'Day 11',
+            'Day 12': 'Day 12',
+            'Day 13': 'Day 13',
+            'Day 14': 'Day 14',
+            'Day 15': 'Day 15',
+            'Day 16': 'Day 16',
+            'Day 17': 'Day 17',
+            'Day 18': 'Day 18',
+            'Day 19': 'Day 19',
+            'Day 20': 'Day 20',
+            'Day 21': 'Day 21'
+        };
+        const DAY_IDS = Object.keys(DAY_NAMES);
+
+        let selectedUnits = new Set();
+
+        const unitGrid = document.getElementById('unitGrid');
+        DAY_IDS.forEach(id => {
+            const chip = document.createElement('div');
+            chip.className = 'unit-chip';
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.value = id;
+            cb.id = 'unit-' + id;
+            cb.addEventListener('change', function() {
+                if (this.checked) selectedUnits.add(this.value);
+                else selectedUnits.delete(this.value);
+                updateUnitCount();
+                updateStartButton();
+            });
+            const label = document.createElement('label');
+            label.htmlFor = 'unit-' + id;
+            label.textContent = id;
+            chip.appendChild(cb);
+            chip.appendChild(label);
+            unitGrid.appendChild(chip);
+        });
+
+        function updateUnitCount() {
+            document.getElementById('unitCount').textContent = '已选 ' + selectedUnits.size + ' 个';
+        }
+
+        function updateStartButton() {
+            const btn = document.getElementById('startBtn');
+            btn.disabled = selectedUnits.size === 0;
+            if (selectedUnits.size === 0) {
+                btn.textContent = '请至少选择一个单元';
+            } else {
+                const modeText = selectedMode === 'dictation' ? '听写' : '含义';
+                btn.textContent = '开始 ' + modeText + ' (' + selectedUnits.size + ' 个单元)';
+            }
+        }
+
+        // ============================================================
+        // 开始按钮
+        // ============================================================
+        document.getElementById('startBtn').addEventListener('click', function() {
+            if (selectedUnits.size === 0) return;
+            const voice = document.querySelector('input[name="voice"]:checked').value;
+            const unitsParam = Array.from(selectedUnits).join(',');
+            window.location.href = 'quiz.html?mode=' + selectedMode + '&units=' + encodeURIComponent(unitsParam) + '&voice=' + voice + '&login=ok';
+        });
+
+        // ============================================================
+        // 退出登录
+        // ============================================================
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('确定要退出吗？')) {
+                sessionStorage.removeItem('loginOk');
+                window.location.replace('login.html');
+            }
+        });
+
+        updateUnitCount();
+        updateStartButton();
+
+        console.log('✅ Reborn新生留学 · 高阶词汇听写 首页已加载');
+        console.log('🔒 密码: reborn2026');
+    </script>
+</body>
+</html>

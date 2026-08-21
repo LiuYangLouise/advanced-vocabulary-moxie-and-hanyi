@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录 · 高阶词汇听写</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background: #1A1A1A;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        body.light-mode {
+            background: #f0f7ea;
+        }
+        .box {
+            width: 420px;
+            max-width: 100%;
+            background: #1A1A1A;
+            padding: 48px 40px 40px;
+            border-radius: 20px;
+            border: 1px solid #2A2A2A;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .box {
+            background: #FFFFFF;
+            border-color: #e3f0da;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .logo h1 {
+            color: #1A1A1A;
+        }
+        .logo .sub {
+            font-size: 1.0rem;
+            font-weight: 300;
+            color: #5a8a62;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: #2A2A2A;
+            margin: 16px auto 24px;
+            border-radius: 2px;
+        }
+        body.light-mode .divider {
+            background: #dce8d0;
+        }
+        .input-group {
+            text-align: left;
+            margin-bottom: 8px;
+        }
+        .input-group label {
+            font-size: 0.85rem;
+            color: #888888;
+            display: block;
+            margin-bottom: 6px;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .input-group label {
+            color: #666666;
+        }
+        #pwd {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            background: #262626;
+            border: 1px solid #2A2A2A;
+            border-radius: 10px;
+            color: #FFFFFF;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        body.light-mode #pwd {
+            background: #F5F9F2;
+            border-color: #dce8d0;
+            color: #1A1A1A;
+        }
+        #pwd:focus {
+            border-color: #5a8a62;
+            box-shadow: 0 0 0 3px rgba(90, 138, 98, 0.15);
+        }
+        #loginBtn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            background: #2d6b3e;
+            border: none;
+            border-radius: 10px;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 16px;
+            letter-spacing: 1px;
+        }
+        #loginBtn:hover {
+            background: #3a7a4a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(45, 107, 62, 0.35);
+        }
+        #loginBtn:active {
+            transform: scale(0.98);
+        }
+        .error-msg {
+            color: #e06060;
+            font-size: 0.9rem;
+            margin-top: 12px;
+            display: none;
+        }
+        .footer-note {
+            margin-top: 24px;
+            font-size: 0.75rem;
+            color: #555555;
+            letter-spacing: 1px;
+        }
+        body.light-mode .footer-note {
+            color: #999999;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #262626;
+            border: 1px solid #2A2A2A;
+            border-radius: 30px;
+            padding: 8px 16px;
+            color: #CCCCCC;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .theme-toggle {
+            background: #FFFFFF;
+            border-color: #dce8d0;
+            color: #1A1A1A;
+        }
+        .theme-toggle:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">🌓 切换主题</button>
+
+    <div class="box">
+        <div class="logo">
+            <h1>Reborn新生留学</h1>
+            <div class="sub">高阶词汇听写</div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="input-group">
+            <label>🔑 访问密码</label>
+            <input type="password" id="pwd" placeholder="请输入密码" onkeydown="if(event.key==='Enter') verify()">
+        </div>
+        <button id="loginBtn" onclick="verify()">进入学习系统</button>
+        <div class="error-msg" id="errorMsg">密码错误，请重新输入</div>
+        <div class="footer-note">Reborn · 新生留学</div>
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = "reborn2026";
+
+        function verify() {
+            const inputPwd = document.getElementById('pwd').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (inputPwd === CORRECT_PASSWORD) {
+                sessionStorage.setItem('loginOk', 'yes');
+                window.location.replace('index.html?login=ok');
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('pwd').value = '';
+                document.getElementById('pwd').focus();
+                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+            }
+        }
+
+        if (sessionStorage.getItem('loginOk') === 'yes') {
+            window.location.replace('index.html?login=ok');
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        if (localStorage.getItem('theme') === 'light') body.classList.add('light-mode');
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+    </script>
+</body>
+</html>
